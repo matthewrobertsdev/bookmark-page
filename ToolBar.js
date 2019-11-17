@@ -17,9 +17,12 @@ class UnconnectedToolBar extends React.Component{
         <li className={'tool-item '+this.getDeleteButtonColorStyle()}
         onClick={()=>this.handleDeleteClick()}>{this.getDeleteString()}</li>
         {this.addCancelButton()}
-        <li className={'tool-item '+this.getEditButtonColorStyle()} onClick={()=>this.handleEditClicked()}>Edit</li>
-        <li className={'tool-item '+this.getAddButtonColorStyle()} onClick={()=>this.props.setMode('add')}>Add</li>
-        {/*<li className='tool-item settings-button'>Settings</li>*/}
+        <li className={'tool-item '+this.getEditButtonColorStyle()} 
+        onClick={()=>this.handleEditClicked()}>Edit</li>
+        <li className={'tool-item '+this.getAddButtonColorStyle()} 
+        onClick={()=>this.toggleAddMode()}>Add</li>
+        <li className={'tool-item '+this.getMoreButtonColorStyle()} 
+        onClick={()=>this.toggleMoreMode()}>More</li>
         </ul>);};
 
     getAddButtonColorStyle(){
@@ -36,6 +39,26 @@ class UnconnectedToolBar extends React.Component{
 
     getEditButtonColorStyle(){
         return (this.props.mode==='edit'||this.props.mode==='update') ? 'tool-item-selected edit-button-selected':'edit-button';
+    }
+
+    getMoreButtonColorStyle(){
+        return this.props.mode==='more' ? 'tool-item-selected more-button-selected':'more-button';
+    }
+
+    toggleAddMode(){
+        if (this.props.mode==='add'){
+            this.props.setMode('none')
+        } else {
+            this.props.setMode('add')
+        }
+    }
+
+    toggleMoreMode(){
+        if (this.props.mode==='more'){
+            this.props.setMode('none')
+        } else {
+            this.props.setMode('more')
+        }
     }
 
     toggleRearrangeMode(){

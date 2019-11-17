@@ -18,3 +18,7 @@ export const setUpdatingURL = (URL) => ({ type: 'SET_UPDATING_URL', URL});
 export const setUpdatingIndex = (index) => ({ type: 'SET_UPDATING_INDEX', index});
 
 export const updateBookmark = (index, bookmark) => ({ type: 'UPDATE_BOOKMARK', index, bookmark});
+
+export const appendBookmarks = (bookmarks) => ({ type: 'APPEND_BOOKMARKS', bookmarks});
+
+

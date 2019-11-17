@@ -10,11 +10,12 @@ const bookmarkReducer = (state = initialState, action) => {
         case 'SET_MODE':
             return { ...state, mode: action.mode };
         case 'SET_BOOKMARKS':
-            return { ...state, bookmarks: action.bookmarks }
+            var validatedBookmarks=validateBookmarks(action.bookmarks);
+            saveBookmarks(validatedBookmarks);
+            return { ...state, bookmarks: validatedBookmarks }
         case 'ADD_BOOKMARK':
             let newBookmarks=[]
             if (state.bookmarks!==null){
-                console.log()
                 newBookmarks = state.bookmarks.slice(0);
                 newBookmarks.unshift(action.bookmark);
             } else {
@@ -50,14 +51,29 @@ const bookmarkReducer = (state = initialState, action) => {
         case 'SET_UPDATING_INDEX':
                 return {...state, index: action.index}
         case 'UPDATE_BOOKMARK':
-                let updatedBookMarks=state.bookmarks
-                updatedBookMarks[action.index]=action.bookmark
-                saveBookmarks(updatedBookMarks);
-                return { ...state, bookmarks: updatedBookMarks}
+                let updatedBookmarks=state.bookmarks
+                updatedBookmarks[action.index]=action.bookmark
+                saveBookmarks(updatedBookmarks);
+                return { ...state, bookmarks: updatedBookmarks}
+        case 'APPEND_BOOKMARKS':
+                let withAppend=state.bookmarks.concat(validateBookmarks(action.bookmarks));
+                saveBookmarks(withAppend);
+                return { ...state, bookmarks: withAppend}
         default:
             return state;
     }
 
+}
+
+export const validateBookmarks=function validateBookmarks(bookmarks){
+    var validatedBookmarks=[];
+    for(let i=0; i<bookmarks.length; i++){
+        if (bookmarks[i].name&&bookmarks[i].name!==null&&bookmarks[i].name!==undefined&&bookmarks[i].name!==''
+        &&bookmarks[i].URL&&bookmarks[i].URL!==null&&bookmarks[i].URL!==undefined&&bookmarks[i].URL!==''){
+            validatedBookmarks.push(bookmarks[i]);
+        }
+    }
+    return validatedBookmarks;
 }
 
 export const saveBookmarks=function saveBookmarks(bookmarks) {
@@ -65,8 +81,12 @@ export const saveBookmarks=function saveBookmarks(bookmarks) {
 }
 
 function getSavedBookmarks() {
-    if (localStorage.getItem('savedBookmarks') != null) {
-        return JSON.parse(localStorage.getItem('savedBookmarks'));
+    if (localStorage.getItem('savedBookmarks') !== null&&localStorage.getItem('savedBookmarks')!==undefined) {
+        try{
+            return JSON.parse(localStorage.getItem('savedBookmarks'));
+        } catch(e){
+            return [];
+        }
     } else {
         return [];
     }

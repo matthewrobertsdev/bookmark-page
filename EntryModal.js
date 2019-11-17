@@ -76,7 +76,7 @@ class UnconnectedEntryModal extends React.Component{
     getTitleString(){
       if (this.props.mode==='add'){
         return 'Add Bookmark:'
-      } else if (this.props.mode==='edit'){
+      } else if (this.props.mode==='update'){
         return 'Update Bookmark:'
       }
     }
